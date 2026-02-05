@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  vault:
+    image: hashicorp/vault:latest
+    container_name: consul-vault-integration-vault
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "dev-root-token"
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    cap_add:
+      - IPC_LOCK
+    command: server -dev
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  consul:
+    image: hashicorp/consul:latest
+    container_name: consul-vault-integration-consul
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    command: agent -dev -client=0.0.0.0 -ui
+    healthcheck:
+      test: ["CMD", "consul", "info"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+networks:
+  default:
+    name: consul-vault-network
