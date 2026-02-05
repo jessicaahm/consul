@@ -1,0 +1,16 @@
+vault:
+  address: "http://localhost:8200"
+  token: ""  # Can be overridden via environment variable VAULT_TOKEN
+  namespace: ""
+  mount_point: "secret"
+
+consul:
+  host: "localhost"
+  port: 8500
+  scheme: "http"
+  token: ""  # Can be overridden via environment variable CONSUL_HTTP_TOKEN
+  datacenter: "dc1"
+
+integration:
+  secret_prefix: "consul-services"
+  sync_interval: 60
