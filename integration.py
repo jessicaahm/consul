@@ -82,11 +82,7 @@ class ConsulVaultIntegration:
                 logger.error(f"Invalid Vault reference for {service_name}")
                 return None
             
-            # Remove prefix to get the actual path
-            if vault_path.startswith(f"{self.secret_prefix}/"):
-                vault_path = vault_path[len(f"{self.secret_prefix}/"):]
-            
-            # Retrieve secret from Vault
+            # Retrieve secret from Vault using the full path
             secret = self.vault.read_secret(vault_path)
             return secret
         except json.JSONDecodeError as e:
@@ -107,7 +103,7 @@ class ConsulVaultIntegration:
         
         # Delete from Vault
         vault_path = f"{self.secret_prefix}/{service_name}"
-        if not self.vault.delete_secret(service_name):
+        if not self.vault.delete_secret(vault_path):
             logger.warning(f"Failed to delete secret from Vault for {service_name}")
             success = False
         
