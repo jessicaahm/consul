@@ -1,0 +1,6 @@
+# Ignore troubleshooting files
+troubleshooting-htx/
+install.md
+agent.hcl
+.*
+setup/sample_terraform.tf
